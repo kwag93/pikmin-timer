@@ -39,6 +39,21 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* Pikmin Nature Palette */
+    --pk-sky-deep: 196 72% 52%;
+    --pk-sky-mid: 200 68% 72%;
+    --pk-sky-pale: 204 60% 88%;
+    --pk-grass-deep: 130 45% 28%;
+    --pk-grass-mid: 128 42% 42%;
+    --pk-grass-light: 122 38% 62%;
+    --pk-grass-pale: 118 35% 88%;
+    --pk-mushroom-cap: 15 55% 38%;
+    --pk-mushroom-stem: 30 40% 72%;
+    --pk-state-safe: 128 42% 42%;
+    --pk-state-warn: 42 95% 52%;
+    --pk-state-danger: 14 90% 58%;
+    --pk-state-done: 0 72% 52%;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -65,6 +80,11 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    --pk-sky-deep: 220 30% 20%;
+    --pk-grass-deep: 130 35% 18%;
+    --pk-grass-mid: 128 35% 35%;
+    --pk-grass-pale: 130 20% 20%;
   }
 }
 

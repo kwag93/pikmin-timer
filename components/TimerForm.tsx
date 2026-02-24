@@ -2,88 +2,91 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { formVariants } from '@/lib/motionVariants'
+import { QuickAddBar } from '@/components/QuickAddBar'
 
 interface TimerFormProps {
-  onSubmit: (hours: number, minutes: number, seconds: number, label: string) => void
+  onAddTimer: (durationSeconds: number, label: string) => void
+  canAddTimer: boolean
 }
 
-export function TimerForm({ onSubmit }: TimerFormProps) {
-  const [hours, setHours] = useState(0)
-  const [minutes, setMinutes] = useState(0)
+export function TimerForm({ onAddTimer, canAddTimer }: TimerFormProps) {
+  const [minutes, setMinutes] = useState(5)
   const [seconds, setSeconds] = useState(0)
   const [label, setLabel] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (hours === 0 && minutes === 0 && seconds === 0) return
-    onSubmit(hours, minutes, seconds, label || '타이머')
-    setHours(0)
-    setMinutes(0)
+    const total = minutes * 60 + seconds
+    if (total <= 0) return
+    onAddTimer(total, label)
+    setMinutes(5)
     setSeconds(0)
     setLabel('')
   }
 
+  const handlePresetSelect = (durationSeconds: number, presetLabel: string) => {
+    onAddTimer(durationSeconds, presetLabel)
+  }
+
   return (
-    <motion.form 
-      onSubmit={handleSubmit} 
-      className="flex flex-col items-center bg-white bg-opacity-80 p-6 rounded-lg shadow-lg z-10"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
+    <motion.form
+      onSubmit={handleSubmit}
+      variants={formVariants}
+      initial="initial"
+      animate="animate"
+      className="w-full max-w-md bg-white/85 backdrop-blur-sm rounded-2xl shadow-lg p-5 flex flex-col gap-4"
     >
-      <div className="flex gap-4 mb-4">
-        <div className="flex flex-col items-center">
-          <label htmlFor="hours" className="text-sm text-gray-600 mb-1">시</label>
-          <input
-            id="hours"
-            type="number"
-            value={hours}
-            onChange={(e) => setHours(Number(e.target.value))}
-            min="0"
-            max="23"
-            className="w-16 px-2 py-1 border rounded text-center focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-        </div>
-        <div className="flex flex-col items-center">
-          <label htmlFor="minutes" className="text-sm text-gray-600 mb-1">분</label>
+      {/* Quick presets */}
+      <QuickAddBar onSelect={handlePresetSelect} disabled={!canAddTimer} />
+
+      {/* Time inputs */}
+      <div className="flex items-end gap-3 justify-center">
+        <div className="flex flex-col items-center gap-1">
+          <label htmlFor="minutes" className="text-xs text-gray-500 font-medium">분</label>
           <input
             id="minutes"
             type="number"
             value={minutes}
-            onChange={(e) => setMinutes(Number(e.target.value))}
+            onChange={(e) => setMinutes(Math.max(0, Math.min(30, Number(e.target.value))))}
             min="0"
-            max="59"
-            className="w-16 px-2 py-1 border rounded text-center focus:outline-none focus:ring-2 focus:ring-green-500"
+            max="30"
+            className="w-20 px-3 py-2 border-2 border-green-300 rounded-xl text-center text-2xl font-bold text-green-800 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
           />
         </div>
-        <div className="flex flex-col items-center">
-          <label htmlFor="seconds" className="text-sm text-gray-600 mb-1">초</label>
+        <span className="text-2xl font-bold text-gray-400 mb-2">:</span>
+        <div className="flex flex-col items-center gap-1">
+          <label htmlFor="seconds" className="text-xs text-gray-500 font-medium">초</label>
           <input
             id="seconds"
             type="number"
             value={seconds}
-            onChange={(e) => setSeconds(Number(e.target.value))}
+            onChange={(e) => setSeconds(Math.max(0, Math.min(59, Number(e.target.value))))}
             min="0"
             max="59"
-            className="w-16 px-2 py-1 border rounded text-center focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-20 px-3 py-2 border-2 border-green-300 rounded-xl text-center text-2xl font-bold text-green-800 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
           />
         </div>
       </div>
-      <div className="w-full mb-4">
-        <input
-          type="text"
-          value={label}
-          onChange={(e) => setLabel(e.target.value)}
-          placeholder="타이머 라벨"
-          className="w-full px-3 py-2 border rounded text-center focus:outline-none focus:ring-2 focus:ring-green-500"
-        />
-      </div>
-      <button 
-        type="submit" 
-        className="px-6 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+
+      {/* Label input */}
+      <input
+        type="text"
+        value={label}
+        onChange={(e) => setLabel(e.target.value)}
+        placeholder="타이머 이름 (선택)"
+        maxLength={20}
+        className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl text-center focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100 text-gray-700 placeholder-gray-400"
+      />
+
+      {/* Submit */}
+      <button
+        type="submit"
+        disabled={!canAddTimer || (minutes * 60 + seconds) <= 0}
+        className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
       >
-        타이머 생성
+        {canAddTimer ? '타이머 시작 🍄' : '최대 8개까지 생성 가능합니다'}
       </button>
     </motion.form>
   )
 }
-
