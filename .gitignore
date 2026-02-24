@@ -1,6 +1,38 @@
+# dependencies
 node_modules
+
+# build output
 dist
 dev-dist
-.next
+
+# typescript
 *.tsbuildinfo
+
+# env files
 *.local
+.env
+.env.*
+
+# editor / OS
+.DS_Store
+*.swp
+*.swo
+.vscode/settings.json
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# legacy
+.next
+
+# temp files
+tmp/
+
+# OMC / Claude Code local state
+.omc/
+.history/
+CLAUDE.md
+AGENTS.md
+**/AGENTS.md
