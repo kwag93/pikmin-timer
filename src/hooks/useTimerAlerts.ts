@@ -11,7 +11,7 @@ interface UseTimerAlertsOptions {
 
 export function useTimerAlerts({ timers, now, onTimerComplete, notify }: UseTimerAlertsOptions) {
   const notifiedRef = useRef(new Set<string>())
-  const timeoutRefs = useRef(new Map<string, NodeJS.Timeout>())
+  const timeoutRefs = useRef(new Map<string, ReturnType<typeof setTimeout>>())
 
   // Schedule notifications for running timers
   useEffect(() => {
