@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"claude mcp remove stitch -s project 2>&1\",\"description\":\"Remove incorrectly added project-level stitch MCP\"}",
+  "error": "Exit code 1\nNo MCP server found with name: stitch in .mcp.json\n\nNo MCP server found with name: stitch in .mcp.json",
+  "timestamp": "2026-02-24T04:53:19.996Z",
+  "retry_count": 1
+}
